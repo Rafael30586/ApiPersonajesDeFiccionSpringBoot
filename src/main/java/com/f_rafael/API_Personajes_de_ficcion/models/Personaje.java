@@ -18,14 +18,14 @@ public class Personaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ElementCollection
-    @CollectionTable(name = "personaje_nombres")
-    private List<String> nombre;
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
     @ElementCollection
     @CollectionTable(name = "personaje_apodos")
     private List<String> apodo;
-    @Column(name = "url_imagen")
-    private String urlImagen;
+    @ElementCollection
+    @CollectionTable(name = "personaje_url_imagenes")
+    private String[] urlImagen = new String[3];
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "personaje_obra",
