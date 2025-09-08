@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IObraService {
-    public Optional<Obra> findById(Long id);
-    public List<Obra> findAll();
-    public void deleteById(Long id);
-    public Obra save(Obra obra);
-    public Obra update(Obra obra);
+    public Optional<Obra> encontrarPorId(Long id);
+    public List<Obra> encontrarTodos();
+    public void borrarPorId(Long id);
+    public Obra guardar(Obra obra);
+    public Obra actualizar(Obra obra);
+    public List<Obra> encontrarPotTitulo(String titulo);
+    public List<Obra> encontrarPorFragmentoTitulo(String fragmentoTitulo);
+    public Optional<Obra> devolverObraConPersonajes(Long id);
 }

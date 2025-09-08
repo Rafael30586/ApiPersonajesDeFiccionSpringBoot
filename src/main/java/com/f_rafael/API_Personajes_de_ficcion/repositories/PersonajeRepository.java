@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -16,8 +17,19 @@ public interface PersonajeRepository extends JpaRepository<Personaje, Long> {
     @Query(value = "SELECT ",nativeQuery = true)
     List<Personaje> buscarPersonajesConSusObras();
   */
-    @Query(value = "SELECT p.nombreCompleto, p.apodo, p.obras, p.especie FROM Personaje p")
+    @Query(value = "SELECT p.id, p.nombreCompleto, p.apodo, p.obras, p.especie FROM Personaje p")
     List<Personaje> buscarPersonajesConSusObras();
 
     List<Personaje> findByNombreCompleto(String nombreCompleto);
+
+    @Query("SELECT p FROM Personaje p WHERE p.nombreCompleto LIKE :fragmentoNombre")
+    List<Personaje> buscarPersonajesPorFragmentoNombre(@Param("fragmentoNombre") String fragmentoNombre);
+
+    @Query("SELECT p FROM Personaje p WHERE p.apodo LIKE :fragmentoApodo")
+    List<Personaje> buscarPersonajesPorFragmentoApodo(@Param("fragmentoApodo") String fragmentoApodo);
+
+    @Query("SELECT p.id, p.nombreCompleto, p.apodo, p.obras, p.especie FROM Personaje p WHERE id = :id")
+    Optional<Personaje> devolverPersonajeConSusObras(@Param("id") Long id);
+
+
 }

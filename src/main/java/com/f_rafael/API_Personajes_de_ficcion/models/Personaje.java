@@ -25,7 +25,7 @@ public class Personaje {
     private List<String> apodo;
     @ElementCollection
     @CollectionTable(name = "personaje_url_imagenes")
-    private String[] urlImagen = new String[3];
+    private Set<String> urlImagenes; // Cambiar a un Set<String>
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "personaje_obra",

@@ -17,27 +17,37 @@ public class EspecieService implements IEspecieService{
     }
 
     @Override
-    public Optional<Especie> finfById(Long id) {
+    public Optional<Especie> encontrarPorId(Long id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<Especie> findAll() {
+    public List<Especie> encontrarTodos() {
         return repository.findAll();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void borrarPorId(Long id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Especie save(Especie especie) {
+    public Especie guardar(Especie especie) {
         return repository.save(especie);
     }
 
     @Override
-    public Especie update(Especie especie) {
-        return this.save(especie);
+    public Especie actualizar(Especie especie) {
+        return this.guardar(especie);
+    }
+
+    @Override
+    public Optional<Especie> encontrarPorNombre(String nombre) {
+        return repository.findByNombre(nombre);
+    }
+
+    @Override
+    public List<Especie> encontrarPorFragmentoNombre(String fragmentoNombre) {
+        return repository.encontrarPorFragmentoNombre(fragmentoNombre);
     }
 }

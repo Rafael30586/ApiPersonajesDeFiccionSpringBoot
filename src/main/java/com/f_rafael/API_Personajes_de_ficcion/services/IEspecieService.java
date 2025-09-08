@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IEspecieService {
-    public Optional<Especie> finfById(Long id);
-    public List<Especie> findAll();
-    public void deleteById(Long id);
-    public Especie save(Especie especie);
-    public Especie update(Especie especie);
+    public Optional<Especie> encontrarPorId(Long id);
+    public List<Especie> encontrarTodos();
+    public void borrarPorId(Long id);
+    public Especie guardar(Especie especie);
+    public Especie actualizar(Especie especie);
+    public Optional<Especie> encontrarPorNombre(String nombre);
+    public List<Especie> encontrarPorFragmentoNombre(String fragmentoNombre);
 }

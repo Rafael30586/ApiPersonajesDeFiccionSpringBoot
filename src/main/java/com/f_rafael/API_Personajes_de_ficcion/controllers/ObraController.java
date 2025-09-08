@@ -19,27 +19,38 @@ public class ObraController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Obra> findById(@PathVariable Long id){
-        Obra obra = service.findById(id).orElse(new Obra(-99999L,null,null,null,null));
+        Obra obra = service.devolverObraConPersonajes(id).orElse(new Obra(-99999L,null,null,null,null));
         return ResponseEntity.ok(obra);
     }
 
     @GetMapping
     public ResponseEntity<List<Obra>> findAll(){
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(service.encontrarTodos());
     }
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id){
-        service.deleteById(id);
+        service.borrarPorId(id);
     }
 
     @PostMapping
     public ResponseEntity<Obra> save(@RequestBody Obra obra){
-        return ResponseEntity.ok(service.save(obra));
+        return ResponseEntity.ok(service.guardar(obra));
     }
 
     @PutMapping
     public ResponseEntity<Obra> update(@RequestBody Obra obra){
-        return ResponseEntity.ok(service.save(obra));
+        return ResponseEntity.ok(service.guardar(obra));
+    }
+
+    @GetMapping("/por-titulo/{titulo}")
+    public ResponseEntity<List<Obra>> buscarPorTitulo(@PathVariable String titulo){
+        String tituloSinGuiones = titulo.replace('-',' ');
+        return ResponseEntity.ok(service.encontrarPotTitulo(tituloSinGuiones));
+    }
+
+    @GetMapping("por-fragmento-titulo/{fragmento-titulo}")
+    public ResponseEntity<List<Obra>> buscarPorFragmentoTitulo(@PathVariable("fragmento-titulo") String fragmentoTitulo){
+        return ResponseEntity.ok(service.encontrarPorFragmentoTitulo(fragmentoTitulo));
     }
 }

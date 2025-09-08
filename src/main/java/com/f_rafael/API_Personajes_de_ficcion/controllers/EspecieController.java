@@ -19,28 +19,35 @@ public class EspecieController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Especie> findById(@PathVariable Long id){
-        Especie especie = service.finfById(id).orElse(new Especie(-99999999L, "No está"));
+    public ResponseEntity<Especie> encontrarPorId(@PathVariable Long id){
+        Especie especie = service.encontrarPorId(id).orElse(new Especie(-99999999L, "No está presente"));
         return ResponseEntity.ok(especie);
     }
 
     @GetMapping
-    public ResponseEntity<List<Especie>> findAll(){
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<Especie>> encontrarTodos(){
+        return ResponseEntity.ok(service.encontrarTodos());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id){
-        service.deleteById(id);
+    public void borrarPorId(@PathVariable Long id){
+        service.borrarPorId(id);
     }
 
     @PostMapping
-    public ResponseEntity<Especie> save(@RequestBody Especie especie){
-        return ResponseEntity.ok(service.save(especie));
+    public ResponseEntity<Especie> guardar(@RequestBody Especie especie){
+        return ResponseEntity.ok(service.guardar(especie));
     }
 
     @PutMapping
-    public ResponseEntity<Especie> update(@RequestBody Especie especie){
-        return ResponseEntity.ok(service.update(especie));
+    public ResponseEntity<Especie> actualizar(@RequestBody Especie especie){
+        return ResponseEntity.ok(service.actualizar(especie));
+    }
+
+    @GetMapping("/por-nombre")
+    public ResponseEntity<Especie> encontrarPorNombre(@PathVariable String nombre){
+        String nombreSinGuiones = nombre.replace('-',' ');
+        Especie especie = service.encontrarPorNombre(nombreSinGuiones).orElse(new Especie(-99999999L, null));
+        return ResponseEntity.ok(especie);
     }
 }

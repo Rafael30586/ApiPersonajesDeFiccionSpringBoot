@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
 public class PersonajeConFotoDto {
-    private List<String> nombre;
-    private List<String> apodo;
-    private String[] url_imagen;
+    private String nombreCompleto;
+    private List<String> apodos;
+    private Set<String> url_imagenes;
 }
