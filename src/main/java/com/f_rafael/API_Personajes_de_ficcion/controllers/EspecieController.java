@@ -4,12 +4,11 @@ import com.f_rafael.API_Personajes_de_ficcion.models.Especie;
 import com.f_rafael.API_Personajes_de_ficcion.services.EspecieService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
-@RequestMapping("/especie")
+@RequestMapping("/especies")
 public class EspecieController {
 
     private EspecieService service;
@@ -18,13 +17,13 @@ public class EspecieController {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // Funciona
     public ResponseEntity<Especie> encontrarPorId(@PathVariable Long id){
         Especie especie = service.encontrarPorId(id).orElse(new Especie(-99999999L, "No está presente"));
         return ResponseEntity.ok(especie);
     }
 
-    @GetMapping
+    @GetMapping // Funciona
     public ResponseEntity<List<Especie>> encontrarTodos(){
         return ResponseEntity.ok(service.encontrarTodos());
     }
@@ -34,20 +33,25 @@ public class EspecieController {
         service.borrarPorId(id);
     }
 
-    @PostMapping
+    @PostMapping // Funciona
     public ResponseEntity<Especie> guardar(@RequestBody Especie especie){
         return ResponseEntity.ok(service.guardar(especie));
     }
 
-    @PutMapping
+    @PutMapping // Funciona
     public ResponseEntity<Especie> actualizar(@RequestBody Especie especie){
         return ResponseEntity.ok(service.actualizar(especie));
     }
 
-    @GetMapping("/por-nombre")
+    @GetMapping("/por-nombre/{nombre}") // Funciona
     public ResponseEntity<Especie> encontrarPorNombre(@PathVariable String nombre){
         String nombreSinGuiones = nombre.replace('-',' ');
-        Especie especie = service.encontrarPorNombre(nombreSinGuiones).orElse(new Especie(-99999999L, null));
+        Especie especie = service.encontrarPorNombre(nombreSinGuiones).orElse(new Especie(-99999999L, "Especie no encontrada"));
         return ResponseEntity.ok(especie);
+    }
+
+    @GetMapping("/por-fragmento-nombre/{fragmento-nombre}") // Funciona
+    public ResponseEntity<List<Especie>>  encontrarPorFragmentoNombre(@PathVariable("fragmento-nombre") String fragmentoNombre){
+        return ResponseEntity.ok(service.encontrarPorFragmentoNombre(fragmentoNombre));
     }
 }

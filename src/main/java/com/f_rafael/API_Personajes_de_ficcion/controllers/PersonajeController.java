@@ -85,7 +85,7 @@ public class PersonajeController {
     }
 
     @PatchMapping("/editar-nombre/{personaje-id}")
-    public ResponseEntity<String> editarNombre(@PathVariable("personaje-id") Long personajeId,
+    public ResponseEntity<Personaje> editarNombre(@PathVariable("personaje-id") Long personajeId,
                                                @RequestParam("nombre-completo") String nombreCompleto){
 
         Personaje personajeAEditar;
@@ -93,34 +93,34 @@ public class PersonajeController {
         if(service.encontrarPorId(personajeId).isPresent()){
             personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
             personajeAEditar.setNombreCompleto(nombreCompleto);
-            service.guardar(personajeAEditar);
+            //service.guardar(personajeAEditar);
 
-            return ResponseEntity.ok("Personaje editado");
+            return ResponseEntity.ok(service.guardar(personajeAEditar));
         }else{
-            return ResponseEntity.ok("Personaje no encontrado");
+            return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
         }
 
     }
 
     @PatchMapping("/editar-apodos/{personaje-id}")
-    public ResponseEntity<String> editarApodos(@PathVariable("personaje-id") Long personajeId,
+    public ResponseEntity<Personaje> editarApodos(@PathVariable("personaje-id") Long personajeId,
                                                @RequestBody List<String> listaApodos){
         Personaje personajeAEditar;
 
         if(service.encontrarPorId(personajeId).isPresent()){
             personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
             personajeAEditar.setApodo(listaApodos);
-            service.guardar(personajeAEditar);
+            // service.guardar(personajeAEditar);
 
-            return ResponseEntity.ok("Personaje editado");
+            return ResponseEntity.ok(service.guardar(personajeAEditar));
         }else{
-            return ResponseEntity.ok("Personaje no encontrado");
+            return ResponseEntity.ok(new Personaje(-999999L,"Personaje no encontrado",null,null,null,null));
         }
 
     }
 
     @PatchMapping("/cambiar-imagenes/{personaje-id}")
-    public ResponseEntity<String> cambiarImagenes(@PathVariable Long personajeId,
+    public ResponseEntity<Personaje> cambiarImagenes(@PathVariable Long personajeId,
                                                   @RequestBody Set<String> urlImagenes){
         Personaje personajeAEditar;
 
@@ -129,37 +129,37 @@ public class PersonajeController {
             personajeAEditar.setUrlImagenes(urlImagenes);
             service.guardar(personajeAEditar);
 
-            return ResponseEntity.ok("Personaje editado");
+            return ResponseEntity.ok(service.guardar(personajeAEditar));
         }else{
-            return ResponseEntity.ok("Personaje no encontrado");
+            return ResponseEntity.ok(new Personaje(-99999L,"PErsonaje no encontrado",null,null,null,null));
         }
 
     }
 
     @PatchMapping("/agregar-obra/{personaje-id}/{obra-id}")
-    public ResponseEntity<String> agregarObra(@PathVariable("personaje-id") Long personajeId,
+    public ResponseEntity<Personaje> agregarObra(@PathVariable("personaje-id") Long personajeId,
                                                  @PathVariable("obra-id") Long obraId){
         Obra obraAAgregar;
         Personaje personajeAEditar;
         Set<Obra> obrasDelPersonaje;
 
         if(obraService.encontrarPorId(obraId).isPresent()) obraAAgregar = obraService.encontrarPorId(obraId).get();
-        else return ResponseEntity.ok("Obra no encontrada");
+        else return ResponseEntity.ok(new Personaje(-99999L,"Obra no encontrada",null,null,null,null));
 
         if(service.encontrarPorId(personajeId).isPresent()) personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
-        else return ResponseEntity.ok("Personaje no encontrado");
+        else return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
 
         obrasDelPersonaje = personajeAEditar.getObras();
         obrasDelPersonaje.add(obraAAgregar);
         personajeAEditar.setObras(obrasDelPersonaje);
 
-        service.guardar(personajeAEditar);
+        //service.guardar(personajeAEditar);
 
-        return ResponseEntity.ok(personajeAEditar.getNombreCompleto()+" editado");
+        return ResponseEntity.ok(service.guardar(personajeAEditar));
     }
 
     @PatchMapping("/remover-obra/{personaje-id}/{obra-id}")
-    public ResponseEntity<String> removerObra(@PathVariable("personaje-id") Long personajeId,
+    public ResponseEntity<Personaje> removerObra(@PathVariable("personaje-id") Long personajeId,
                                               @PathVariable("obra-id") Long obraId){
         Obra obraARemover = new Obra();
         Personaje personajeAEditar;
@@ -170,7 +170,7 @@ public class PersonajeController {
             personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
             obrasDelPersonaje = personajeAEditar.getObras();
         }
-        else return ResponseEntity.ok("Personaje no encontrado");
+        else return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
 
         for(Obra o : obrasDelPersonaje){
             if(o.equals(obraId)) {
@@ -182,16 +182,16 @@ public class PersonajeController {
         if(obraPresente){
             obrasDelPersonaje.remove(obraARemover);
         }else{
-            return ResponseEntity.ok("Obra no encontrada");
+            return ResponseEntity.ok(new Personaje(-99999L,"Obra no encontrada",null,null,null,null));
         }
 
         personajeAEditar.setObras(obrasDelPersonaje);
 
-        return ResponseEntity.ok("Personaje editado");
+        return ResponseEntity.ok(service.actualizar(personajeAEditar));
     }
 
     @PatchMapping("editar-especie/{personaje-id}/{especie-id}")
-    public ResponseEntity<String> editarEspecie(@PathVariable("personaje-id") Long personajeId,
+    public ResponseEntity<Personaje> editarEspecie(@PathVariable("personaje-id") Long personajeId,
                                                 @PathVariable("especie-id") Long especieId){
         Personaje personajeAEditar;
         Especie especideAAgregar;
@@ -199,19 +199,19 @@ public class PersonajeController {
         if(especieService.encontrarPorId(especieId).isPresent()){
             especideAAgregar = especieService.encontrarPorId(especieId).get();
         }else{
-            return ResponseEntity.ok("Especie no encontrada");
+            return ResponseEntity.ok(new Personaje(-9999999L,"Especie no encontrada",null,null,null,null));
         }
 
         if(service.encontrarPorId(personajeId).isPresent()){
             personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
         }else{
-            return ResponseEntity.ok("Personaje no encontrado");
+            return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
         }
 
         personajeAEditar.setEspecie(especideAAgregar);
-        service.guardar(personajeAEditar);
+        //service.guardar(personajeAEditar);
 
-        return ResponseEntity.ok("Personaje editado");
+        return ResponseEntity.ok(service.guardar(personajeAEditar));
     }
 
 

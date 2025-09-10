@@ -1,5 +1,6 @@
 package com.f_rafael.API_Personajes_de_ficcion.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

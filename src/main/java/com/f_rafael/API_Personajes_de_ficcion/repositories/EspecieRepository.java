@@ -14,6 +14,6 @@ public interface EspecieRepository extends JpaRepository<Especie, Long> {
 
     Optional<Especie> findByNombre(String nombre);
 
-    @Query("SELECT e FROM Especie e WHERE nombre LIKE :fragmentoNombre")
+    @Query("SELECT e FROM Especie e WHERE e.nombre LIKE %:fragmentoNombre%")
     List<Especie> encontrarPorFragmentoNombre(@Param("fragmentoNombre") String fragmentoNombre);
 }
