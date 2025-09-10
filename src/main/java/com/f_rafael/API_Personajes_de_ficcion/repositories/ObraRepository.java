@@ -19,5 +19,8 @@ public interface ObraRepository extends JpaRepository<Obra, Long> {
     public List<Obra> encontrarPorFragmentoTitulo(@Param("fragmentoTitulo") String fragmentoTitulo);
 
     @Query("SELECT o FROM Obra o LEFT JOIN FETCH o.personajes WHERE o.id = :id")
-    public Optional<Obra> encontrarObraYSusPersonajes(@Param("id") Long id);
+    public Optional<Obra> encontrarUnaYSusPersonajes(@Param("id") Long id);
+
+    @Query("SELECT o FROM Obra o LEFT JOIN FETCH o.personajes")
+    public List<Obra> buscarTodasConSusPersonajes();
 }

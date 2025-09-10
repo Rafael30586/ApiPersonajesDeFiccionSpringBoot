@@ -1,6 +1,8 @@
 package com.f_rafael.API_Personajes_de_ficcion.controllers;
 
+import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDePersonajeDto;
 import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeConFotoDto;
+import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeDto;
 import com.f_rafael.API_Personajes_de_ficcion.models.Especie;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
@@ -10,6 +12,7 @@ import com.f_rafael.API_Personajes_de_ficcion.services.PersonajeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,17 +31,17 @@ public class PersonajeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Personaje> encontrarPorId(@PathVariable Long id){
-        Personaje personaje = service.devolverPersonajeConSusObras(id).orElse(new Personaje(-99999L,null,null,null,null,null));
+    public ResponseEntity<PersonajeDto> encontrarPorId(@PathVariable Long id){
+        PersonajeDto personaje = service.devolverUnoConSusObras(id);
         return ResponseEntity.ok(personaje);
     }
 
     @GetMapping
-    public ResponseEntity<List<Personaje>> encontrarTodos(){
-        return ResponseEntity.ok(service.encontrarTodos());
+    public ResponseEntity<List<PersonajeDto>> encontrarTodos(){
+        return ResponseEntity.ok(service.devolverTodosConSusObras());
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void borrarPorId(@PathVariable Long id){
         service.borrarPorId(id);
     }
@@ -86,12 +89,12 @@ public class PersonajeController {
 
     @PatchMapping("/editar-nombre/{personaje-id}")
     public ResponseEntity<Personaje> editarNombre(@PathVariable("personaje-id") Long personajeId,
-                                               @RequestParam("nombre-completo") String nombreCompleto){
+                                                     @RequestParam("nombre-completo") String nombreCompleto){
 
         Personaje personajeAEditar;
 
         if(service.encontrarPorId(personajeId).isPresent()){
-            personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
+            personajeAEditar = service.encontrarPorId(personajeId).get();
             personajeAEditar.setNombreCompleto(nombreCompleto);
             //service.guardar(personajeAEditar);
 
@@ -107,12 +110,13 @@ public class PersonajeController {
                                                @RequestBody List<String> listaApodos){
         Personaje personajeAEditar;
 
+
         if(service.encontrarPorId(personajeId).isPresent()){
-            personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
+            personajeAEditar = service.encontrarPorId(personajeId).get();
             personajeAEditar.setApodo(listaApodos);
             // service.guardar(personajeAEditar);
 
-            return ResponseEntity.ok(service.guardar(personajeAEditar));
+            return ResponseEntity.ok(service.guardar(personajeAEditar)); // Corregir esta parte
         }else{
             return ResponseEntity.ok(new Personaje(-999999L,"Personaje no encontrado",null,null,null,null));
         }
@@ -125,7 +129,7 @@ public class PersonajeController {
         Personaje personajeAEditar;
 
         if(service.encontrarPorId(personajeId).isPresent()) {
-            personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
+            personajeAEditar = service.encontrarPorId(personajeId).get();
             personajeAEditar.setUrlImagenes(urlImagenes);
             service.guardar(personajeAEditar);
 
@@ -146,7 +150,7 @@ public class PersonajeController {
         if(obraService.encontrarPorId(obraId).isPresent()) obraAAgregar = obraService.encontrarPorId(obraId).get();
         else return ResponseEntity.ok(new Personaje(-99999L,"Obra no encontrada",null,null,null,null));
 
-        if(service.encontrarPorId(personajeId).isPresent()) personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
+        if(service.encontrarPorId(personajeId).isPresent()) personajeAEditar = service.encontrarPorId(personajeId).get();
         else return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
 
         obrasDelPersonaje = personajeAEditar.getObras();
@@ -167,7 +171,7 @@ public class PersonajeController {
         boolean obraPresente = false;
 
         if(service.encontrarPorId(personajeId).isPresent()) {
-            personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
+            personajeAEditar = service.encontrarPorId(personajeId).get();
             obrasDelPersonaje = personajeAEditar.getObras();
         }
         else return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
@@ -203,7 +207,7 @@ public class PersonajeController {
         }
 
         if(service.encontrarPorId(personajeId).isPresent()){
-            personajeAEditar = service.devolverPersonajeConSusObras(personajeId).get();
+            personajeAEditar = service.encontrarPorId(personajeId).get();
         }else{
             return ResponseEntity.ok(new Personaje(-99999L,"Personaje no encontrado",null,null,null,null));
         }

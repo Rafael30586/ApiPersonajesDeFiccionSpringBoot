@@ -1,5 +1,6 @@
 package com.f_rafael.API_Personajes_de_ficcion.controllers;
 
+import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDto;
 import com.f_rafael.API_Personajes_de_ficcion.models.ClasificacionObra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
@@ -26,14 +27,14 @@ public class ObraController {
     }
 
     @GetMapping("/{id}") // Funciona
-    public ResponseEntity<Obra> findById(@PathVariable Long id){
-        Obra obra = service.devolverObraConPersonajes(id).orElse(new Obra(-99999L,null,null,null,null));
+    public ResponseEntity<ObraDto> findById(@PathVariable Long id){
+        ObraDto obra = service.devolverUnaConSusPersonajes(id);
         return ResponseEntity.ok(obra);
     }
 
-    @GetMapping // Funciona
-    public ResponseEntity<List<Obra>> findAll(){
-        return ResponseEntity.ok(service.encontrarTodos());
+    @GetMapping //Funciona
+    public ResponseEntity<List<ObraDto>> encontrarTodas(){
+        return ResponseEntity.ok(service.devolverObrasConPersonajes());
     }
 
     @DeleteMapping("/{id}")
@@ -69,7 +70,7 @@ public class ObraController {
         String nuevoTituloSinGuiones = nuevoTitulo.replace('-',' ');
 
         if(service.encontrarPorId(obraId).isPresent()){
-            obraAEditar = service.devolverObraConPersonajes(obraId).get();
+            obraAEditar = service.encontrarPorId(obraId).get();
             obraAEditar.setTitulo(nuevoTituloSinGuiones);
 
             return ResponseEntity.ok(service.guardar(obraAEditar));
@@ -85,7 +86,7 @@ public class ObraController {
         Obra obraAEditar;
 
         if(service.encontrarPorId(obraId).isPresent()){
-            obraAEditar = service.devolverObraConPersonajes(obraId).get();
+            obraAEditar = service.encontrarPorId(obraId).get();
             obraAEditar.setFechaLanzamiento(fechaLanzamiento);
 
             return ResponseEntity.ok(service.guardar(obraAEditar));
@@ -109,7 +110,7 @@ public class ObraController {
         }
 
         if(service.encontrarPorId(obraId).isPresent()){
-            obraAEditar = service.devolverObraConPersonajes(obraId).get();
+            obraAEditar = service.encontrarPorId(obraId).get();
             obraAEditar.setClasificacion(clasificacionAEditar);
 
             return ResponseEntity.ok(obraAEditar);
@@ -127,7 +128,7 @@ public class ObraController {
         Set<Personaje> setPersonajes;
 
         if(service.encontrarPorId(obraId).isPresent()){
-            obraAEditar = service.devolverObraConPersonajes(obraId).get();
+            obraAEditar = service.encontrarPorId(obraId).get();
             setPersonajes = obraAEditar.getPersonajes();
         }else{
             return ResponseEntity.ok(new Obra(-9999999L,"Obra no encontrada",null,null,null));
@@ -153,7 +154,7 @@ public class ObraController {
         Personaje personajeARemover = new Personaje();
 
         if(service.encontrarPorId(obraId).isPresent()){
-            obraAEditar = service.devolverObraConPersonajes(obraId).get();
+            obraAEditar = service.encontrarPorId(obraId).get();
             setPersonajes = obraAEditar.getPersonajes();
 
             for(Personaje p : setPersonajes){

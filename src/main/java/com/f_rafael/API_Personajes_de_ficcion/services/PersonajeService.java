@@ -1,9 +1,13 @@
 package com.f_rafael.API_Personajes_de_ficcion.services;
 
+import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDePersonajeDto;
+import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDto;
 import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeConFotoDto;
+import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeDto;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
 import com.f_rafael.API_Personajes_de_ficcion.repositories.PersonajeRepository;
+import com.f_rafael.API_Personajes_de_ficcion.utils.Transform;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -146,8 +150,61 @@ public class PersonajeService implements IPersonajeService {
     }
 
     @Override
-    public Optional<Personaje> devolverPersonajeConSusObras(Long id) {
-        return repository.devolverPersonajeConSusObras(id);
+    public PersonajeDto devolverUnoConSusObras(Long id) {
+        PersonajeDto personajeARetornar;
+        //Personaje informacionPersonaje;
+        //Set<ObraDePersonajeDto> obrasParaAsignar = new HashSet<>();
+        //Set<Obra> informacionObras;
+
+        if(repository.findById(id).isPresent()){
+            // informacionPersonaje = repository.devolverPersonajeConSusObras(id).get();
+            // informacionObras = informacionPersonaje.getObras();
+/*
+            for(Obra o : informacionObras){
+                obrasParaAsignar.add(new ObraDePersonajeDto(o.getTitulo(),o.getFechaLanzamiento(),o.getClasificacion()));
+            }
+
+            personajeARetornar = new PersonajeDto(informacionPersonaje.getId(),
+                    informacionPersonaje.getNombreCompleto(),
+                    informacionPersonaje.getApodo(),
+                    informacionPersonaje.getUrlImagenes(),
+                    obrasParaAsignar,
+                    informacionPersonaje.getEspecie().getNombre());*/
+            personajeARetornar = Transform.transformarEnPersonajeDto(repository.devolverPersonajeConSusObras(id).get());
+        }else{
+            personajeARetornar = new PersonajeDto(-99999L,null,null,null,null,null);
+        }
+
+        return personajeARetornar;
+    }
+
+    @Override
+    public List<PersonajeDto> devolverTodosConSusObras() {
+        List<PersonajeDto> personajesARetornar;
+        /*List<Personaje> informacionPersonajes;
+        Set<Obra> informacionObras;
+        Set<ObraDePersonajeDto> obrasParaAsignar = new HashSet<>();*/
+
+        // informacionPersonajes = repository.buscarPersonajesConSusObras();
+/*
+        for(Personaje p : informacionPersonajes){
+            informacionObras = p.getObras();
+
+            for(Obra o : informacionObras){
+                obrasParaAsignar.add(new ObraDePersonajeDto(o.getTitulo(),o.getFechaLanzamiento(),o.getClasificacion()));
+            }
+
+            personajesARetornar.add(new PersonajeDto(p.getId(),
+                    p.getNombreCompleto(),
+                    p.getApodo(),
+                    p.getUrlImagenes(),
+                    obrasParaAsignar,
+                    p.getEspecie().getNombre()));
+        }*/
+
+        personajesARetornar = Transform.transformarEnPersonajeDtos(repository.buscarPersonajesConSusObras());
+
+        return personajesARetornar;
     }
 
 }

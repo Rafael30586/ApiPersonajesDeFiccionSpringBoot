@@ -1,6 +1,7 @@
 package com.f_rafael.API_Personajes_de_ficcion.services;
 
 import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeConFotoDto;
+import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeDto;
 import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
 
 import java.util.List;
@@ -19,5 +20,6 @@ public interface IPersonajeService {
     public List<Personaje> buscarPorFragmentoNombre(String fragmentoNombre);
     public PersonajeConFotoDto devolverPersonajeConFotos(Long personajeId);
     public List<Personaje> buscarPorFragmentoApodo(String fragmentoApodo);
-    public Optional<Personaje> devolverPersonajeConSusObras(Long id);
+    public PersonajeDto devolverUnoConSusObras(Long id);
+    public List<PersonajeDto> devolverTodosConSusObras();
 }

@@ -1,11 +1,14 @@
 package com.f_rafael.API_Personajes_de_ficcion.services;
 
+import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDto;
+import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeEnObraDto;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
+import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
 import com.f_rafael.API_Personajes_de_ficcion.repositories.ObraRepository;
+import com.f_rafael.API_Personajes_de_ficcion.utils.Transform;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ObraService implements IObraService{
@@ -23,6 +26,28 @@ public class ObraService implements IObraService{
     @Override
     public List<Obra> encontrarTodos() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<ObraDto> devolverObrasConPersonajes() {
+        List<ObraDto> obrasARetornar;
+        //List<Obra> informacionObras = repository.buscarTodasConSusPersonajes();
+       // Set<Personaje> informacionPersonajes;
+        //Set<PersonajeEnObraDto> personajesParaAsignar = new HashSet<>();
+/*
+        for(Obra o : informacionObras){
+            informacionPersonajes = o.getPersonajes();
+
+            for(Personaje p : informacionPersonajes){
+                personajesParaAsignar.add(new PersonajeEnObraDto(p.getNombreCompleto(),p.getApodo(),p.getEspecie().getNombre()));
+            }
+
+            obrasARetornar.add(new ObraDto(o.getId(),o.getTitulo(),o.getFechaLanzamiento(),o.getClasificacion(), personajesParaAsignar));
+
+        }*/
+        obrasARetornar = Transform.transformarEnObraDtos(repository.buscarTodasConSusPersonajes());
+
+        return obrasARetornar;
     }
 
     @Override
@@ -51,7 +76,31 @@ public class ObraService implements IObraService{
     }
 
     @Override
-    public Optional<Obra> devolverObraConPersonajes(Long id) {
-        return repository.encontrarObraYSusPersonajes(id);
+    public ObraDto devolverUnaConSusPersonajes(Long id) {
+        ObraDto obraARetornar;
+        /*Set<Personaje> informacionPersonajes;
+        Obra informacionObra;
+        Set<PersonajeEnObraDto> personajesParaAsignar = new HashSet<>();*/
+
+        if(repository.findById(id).isPresent()){
+            obraARetornar = Transform.tranformarEnObraDto(repository.encontrarUnaYSusPersonajes(id).get());
+            /*
+            informacionObra = repository.encontrarUnaYSusPersonajes(id).get();
+            informacionPersonajes = informacionObra.getPersonajes();
+
+            for(Personaje p : informacionPersonajes){
+                personajesParaAsignar.add(new PersonajeEnObraDto(p.getNombreCompleto(),p.getApodo(),p.getEspecie().getNombre()));
+            }
+
+            obraARetornar = new ObraDto(informacionObra.getId(),
+                    informacionObra.getTitulo(),
+                    informacionObra.getFechaLanzamiento(),
+                    informacionObra.getClasificacion(),
+                    personajesParaAsignar);*/
+        }else{
+            obraARetornar = new ObraDto(-999999L,"Obra no encontrada",null,null,null);
+        }
+
+        return obraARetornar;
     }
 }

@@ -17,7 +17,7 @@ public interface PersonajeRepository extends JpaRepository<Personaje, Long> {
     @Query(value = "SELECT ",nativeQuery = true)
     List<Personaje> buscarPersonajesConSusObras();
   */
-    @Query(value = "SELECT p.id, p.nombreCompleto, p.apodo, p.obras, p.especie FROM Personaje p")
+    @Query(value = "SELECT p FROM Personaje p LEFT JOIN FETCH p.obras")
     List<Personaje> buscarPersonajesConSusObras();
 
     List<Personaje> findByNombreCompleto(String nombreCompleto);
@@ -28,8 +28,9 @@ public interface PersonajeRepository extends JpaRepository<Personaje, Long> {
     @Query("SELECT p FROM Personaje p WHERE p.apodo LIKE :fragmentoApodo")
     List<Personaje> buscarPersonajesPorFragmentoApodo(@Param("fragmentoApodo") String fragmentoApodo);
 
-    @Query("SELECT p.id, p.nombreCompleto, p.apodo, p.obras, p.especie FROM Personaje p WHERE id = :id")
+    @Query("SELECT p FROM Personaje p LEFT JOIN FETCH p.obras WHERE p.id = :id")
     Optional<Personaje> devolverPersonajeConSusObras(@Param("id") Long id);
+
 
 
 }
