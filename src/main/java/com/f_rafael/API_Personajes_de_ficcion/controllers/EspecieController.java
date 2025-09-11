@@ -28,9 +28,10 @@ public class EspecieController {
         return ResponseEntity.ok(service.encontrarTodos());
     }
 
-    @DeleteMapping("/{id}")
-    public void borrarPorId(@PathVariable Long id){
+    @DeleteMapping("/{id}") // Funciona
+    public ResponseEntity<String> borrarPorId(@PathVariable Long id){
         service.borrarPorId(id);
+        return ResponseEntity.ok("Especie borrada");
     }
 
     @PostMapping // Funciona

@@ -23,6 +23,7 @@ public class ObraDto {
     @JsonProperty("fecha_lanzamiento")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaLanzamiento;
+    @JsonProperty("clasificacion_obra")
     private ClasificacionObra clasificacionObra;
     private Set<PersonajeEnObraDto> personajes;
 }

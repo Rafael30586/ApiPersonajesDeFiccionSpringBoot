@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -81,7 +82,21 @@ public class ObraController {
 
     }
 
-    @PatchMapping("/editar-fecha/{obra-id}")
+    @PatchMapping("/cambiar-imagenes/{obra-id}") // Funciona
+    public ResponseEntity<ObraDto> cambiarImagenes(@PathVariable("obra-id") Long obraId,
+                                                   @RequestBody Set<String> imagenes){
+        Obra obraAEditar;
+        if(service.encontrarPorId(obraId).isPresent()){
+            obraAEditar = service.encontrarPorId(obraId).get();
+            obraAEditar.setUrlImagenes(imagenes);
+
+            return ResponseEntity.ok(service.actualizar(obraAEditar));
+        }else{
+            return ResponseEntity.ok(new ObraDto(-9999L, "Obra no encontrada",null,null,null,null));
+        }
+    }
+
+    @PatchMapping("/editar-fecha/{obra-id}") // Funciona
     public ResponseEntity<ObraDto> editarFecha(@PathVariable("obra-id") Long obraId,
                                             @RequestParam("fecha-lanzamiento") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fechaLanzamiento){
         Obra obraAEditar;
@@ -121,43 +136,71 @@ public class ObraController {
 
     }
 
-    @PatchMapping("/agregar-personaje/{obra-id}/{personaje-id}")
+    @PatchMapping("/agregar-personaje/{obra-id}/{personaje-id}") // No funciona por ser una relación bidireccional y la otra entidad es la dueña
     public ResponseEntity<ObraDto> agregarPersonaje(@PathVariable("obra-id") Long obraId,
                                                  @PathVariable("personaje-id") Long personajeId){
         Obra obraAEditar;
         Personaje personajeAAgregar;
-        Set<Personaje> setPersonajes;
+        Set<Personaje> setPersonajes = new HashSet<>();
 
-        if(service.encontrarPorId(obraId).isPresent()){
-            obraAEditar = service.encontrarPorId(obraId).get();
-            setPersonajes = obraAEditar.getPersonajes();
+        if(service.encontrarPorId(obraId).isPresent()){ // Si la obra con ese id existe...
+            obraAEditar = service.encontrarPorId(obraId).get(); // ...traemos obra de la base de datos;
+            setPersonajes = obraAEditar.getPersonajes(); // obtenemos los personajes actuales de la obra;
         }else{
             return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null,null));
         }
 
-        if(personajeService.encontrarPorId(personajeId).isPresent()){
-            personajeAAgregar = personajeService.encontrarPorId(personajeId).get();
+        if(personajeService.encontrarPorId(personajeId).isPresent()){ // Si el personaje con ese id existe...
+            personajeAAgregar = personajeService.encontrarPorId(personajeId).get(); // ...traemos el personaje de la base de datos
         }else{
             return ResponseEntity.ok(new ObraDto(-99999L,"Personaje no encontrado",null,null,null,null));
         }
 
-        setPersonajes.add(personajeAAgregar);
-        obraAEditar.setPersonajes(setPersonajes);
-
+        setPersonajes.add(personajeAAgregar); // añadimos el personaje de la base de datos al set obtenido
+        obraAEditar.setPersonajes(setPersonajes); // asignamos el set de personajes a la obra
 
         return ResponseEntity.ok(service.actualizar(obraAEditar));
+    }
+
+    @PatchMapping("/agregar-personaje2/{obra-id}") // Método de prueba
+    public ResponseEntity<ObraDto> agregarPersonaje2(@PathVariable("obra-id") Long obraId,
+                                                     @RequestBody Personaje personajeAAgregar) {
+
+        Obra obraAEditar;
+        //Personaje personajeAAgregar;
+        Set<Personaje> setPersonajes = new HashSet<>();
+
+        if(service.encontrarPorId(obraId).isPresent()){ // Si la obra con ese id existe...
+            obraAEditar = service.encontrarPorId(obraId).get(); // ...traemos obra de la base de datos;
+            setPersonajes = obraAEditar.getPersonajes(); // obtenemos los personajes actuales de la obra;
+        }else{
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null,null));
+        }
+
+        if(personajeService.encontrarPorId(personajeAAgregar.getId()).isPresent()){
+            //personajeAAgregar = new Personaje();
+            // personajeAAgregar.setId(personajeId); // asignamos el personaje id que viene como argumento
+        }else{
+            return ResponseEntity.ok(new ObraDto(-99999L,"Personaje no encontrado",null,null,null,null));
+        }
+
+        setPersonajes.add(personajeAAgregar); // añadimos el personaje de la base de datos al set obtenido
+        obraAEditar.setPersonajes(setPersonajes); // asignamos el set de personajes a la obra
+
+        return ResponseEntity.ok(service.guardar(obraAEditar));
     }
 
     @PatchMapping("/remover-personaje/{obra-id}/{personaje-id}")
     public ResponseEntity<ObraDto> removerPersonaje(@PathVariable("obra-id") Long obraId,
                                                  @PathVariable("personaje-id") Long personajeId){
         Obra obraAEditar;
-        Set<Personaje> setPersonajes;
+        Set<Personaje> setPersonajes = new HashSet<>();
         Personaje personajeARemover = new Personaje();
         boolean personajePresente = false;
 
         if(service.encontrarPorId(obraId).isPresent()){
             obraAEditar = service.encontrarPorId(obraId).get();
+
             setPersonajes = obraAEditar.getPersonajes();
 
             for(Personaje p : setPersonajes){
