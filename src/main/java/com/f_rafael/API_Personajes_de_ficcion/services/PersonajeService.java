@@ -1,7 +1,5 @@
 package com.f_rafael.API_Personajes_de_ficcion.services;
 
-import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDePersonajeDto;
-import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDto;
 import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeConFotoDto;
 import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeDto;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
@@ -32,27 +30,35 @@ public class PersonajeService implements IPersonajeService {
     }
 
     @Override
-    public void borrarPorId(Long id) {
-        repository.deleteById(id);
+    public PersonajeDto borrarPorId(Long id) {
+        PersonajeDto personajeARetornar;
+        if(this.encontrarPorId(id).isPresent()){
+            personajeARetornar = Transform.transformarEnPersonajeDto(this.encontrarPorId(id).get());
+            repository.deleteById(id);
+        }else{
+            personajeARetornar = new PersonajeDto(-9999999L,"PErsonaje no encontrado",null,null,null,null);
+        }
+        return personajeARetornar;
     }
 
     @Override
-    public Personaje guardar(Personaje personaje) {
-        return repository.save(personaje);
+    public PersonajeDto guardar(Personaje personaje) {
+        Personaje personajeARetornar = repository.save(personaje);
+        return Transform.transformarEnPersonajeDto(personajeARetornar);
     }
 
     @Override
-    public Personaje actualizar(Personaje personaje) {
+    public PersonajeDto actualizar(Personaje personaje) {
         return this.guardar(personaje);
     }
 
     @Override
-    public List<Personaje> buscarPorNombreCompleto(String nombreCompleto) {
-        return repository.findByNombreCompleto(nombreCompleto);
+    public List<PersonajeDto> buscarPorNombreCompleto(String nombreCompleto) {
+        return Transform.transformarEnPersonajeDtos(repository.findByNombreCompleto(nombreCompleto));
     }
 
     @Override
-    public List<Personaje> buscarPorApodo(String apodo) {
+    public List<PersonajeDto> buscarPorApodo(String apodo) {
         List<Personaje> personajesARetornar = new ArrayList<>();
         List<Personaje> todosLosPersonajes = repository.findAll();
         List<String> apodos;
@@ -72,11 +78,11 @@ public class PersonajeService implements IPersonajeService {
             if (guardarPersonaje) personajesARetornar.add(p);
         }
 
-        return personajesARetornar;
+        return Transform.transformarEnPersonajeDtos(personajesARetornar);
     }
 
     @Override
-    public List<Personaje> buscarPorTituloDeObra(String tituloObra) {
+    public List<PersonajeDto> buscarPorTituloDeObra(String tituloObra) {
         List<Personaje> todosLosPersonajes = repository.buscarPersonajesConSusObras();
         List<Personaje> personajesARetornar = new ArrayList<>();
         boolean guaradarPersonaje;
@@ -92,14 +98,13 @@ public class PersonajeService implements IPersonajeService {
             }
 
             if (guaradarPersonaje) personajesARetornar.add(p);
-
         }
 
-        return personajesARetornar;
+        return Transform.transformarEnPersonajeDtos(personajesARetornar);
     }
 
     @Override
-    public List<Personaje> buscarPorNombre(String nombre) {
+    public List<PersonajeDto> buscarPorNombre(String nombre) {
         List<Personaje> todosLosPersonajes = repository.findAll();
         List<Personaje> personajesARetornar = new ArrayList<>();
         String[] arrayNombreCompleto;
@@ -119,12 +124,12 @@ public class PersonajeService implements IPersonajeService {
             }
             if(nombrePresente) personajesARetornar.add(p);
         }
-        return personajesARetornar;
+        return Transform.transformarEnPersonajeDtos(personajesARetornar);
     }
 
     @Override
-    public List<Personaje> buscarPorFragmentoNombre(String fragmentoNombre) {
-        return repository.buscarPersonajesPorFragmentoNombre(fragmentoNombre);
+    public List<PersonajeDto> buscarPorFragmentoNombre(String fragmentoNombre) {
+        return Transform.transformarEnPersonajeDtos(repository.buscarPersonajesPorFragmentoNombre(fragmentoNombre));
     }
 
     @Override
@@ -145,34 +150,20 @@ public class PersonajeService implements IPersonajeService {
     }
 
     @Override
-    public List<Personaje> buscarPorFragmentoApodo(String fragmentoApodo) {
-        return repository.buscarPersonajesPorFragmentoApodo(fragmentoApodo);
+    public List<PersonajeDto> buscarPorFragmentoApodo(String fragmentoApodo) {
+        return Transform.transformarEnPersonajeDtos(repository.buscarPersonajesPorFragmentoApodo(fragmentoApodo));
     }
 
     @Override
     public PersonajeDto devolverUnoConSusObras(Long id) {
         PersonajeDto personajeARetornar;
-        //Personaje informacionPersonaje;
-        //Set<ObraDePersonajeDto> obrasParaAsignar = new HashSet<>();
-        //Set<Obra> informacionObras;
+
 
         if(repository.findById(id).isPresent()){
-            // informacionPersonaje = repository.devolverPersonajeConSusObras(id).get();
-            // informacionObras = informacionPersonaje.getObras();
-/*
-            for(Obra o : informacionObras){
-                obrasParaAsignar.add(new ObraDePersonajeDto(o.getTitulo(),o.getFechaLanzamiento(),o.getClasificacion()));
-            }
 
-            personajeARetornar = new PersonajeDto(informacionPersonaje.getId(),
-                    informacionPersonaje.getNombreCompleto(),
-                    informacionPersonaje.getApodo(),
-                    informacionPersonaje.getUrlImagenes(),
-                    obrasParaAsignar,
-                    informacionPersonaje.getEspecie().getNombre());*/
             personajeARetornar = Transform.transformarEnPersonajeDto(repository.devolverPersonajeConSusObras(id).get());
         }else{
-            personajeARetornar = new PersonajeDto(-99999L,null,null,null,null,null);
+            personajeARetornar = new PersonajeDto(-99999L,"Personaje no encontrado",null,null,null,null);
         }
 
         return personajeARetornar;
@@ -181,27 +172,6 @@ public class PersonajeService implements IPersonajeService {
     @Override
     public List<PersonajeDto> devolverTodosConSusObras() {
         List<PersonajeDto> personajesARetornar;
-        /*List<Personaje> informacionPersonajes;
-        Set<Obra> informacionObras;
-        Set<ObraDePersonajeDto> obrasParaAsignar = new HashSet<>();*/
-
-        // informacionPersonajes = repository.buscarPersonajesConSusObras();
-/*
-        for(Personaje p : informacionPersonajes){
-            informacionObras = p.getObras();
-
-            for(Obra o : informacionObras){
-                obrasParaAsignar.add(new ObraDePersonajeDto(o.getTitulo(),o.getFechaLanzamiento(),o.getClasificacion()));
-            }
-
-            personajesARetornar.add(new PersonajeDto(p.getId(),
-                    p.getNombreCompleto(),
-                    p.getApodo(),
-                    p.getUrlImagenes(),
-                    obrasParaAsignar,
-                    p.getEspecie().getNombre()));
-        }*/
-
         personajesARetornar = Transform.transformarEnPersonajeDtos(repository.buscarPersonajesConSusObras());
 
         return personajesARetornar;

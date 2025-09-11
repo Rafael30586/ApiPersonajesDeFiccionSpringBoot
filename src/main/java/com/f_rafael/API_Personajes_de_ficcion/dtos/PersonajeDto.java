@@ -1,6 +1,7 @@
 package com.f_rafael.API_Personajes_de_ficcion.dtos;
 
 import com.f_rafael.API_Personajes_de_ficcion.models.Especie;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class PersonajeDto {
     private Long id;
-    private String nombre_completo;
+    @JsonProperty("nombre_completo")
+    private String nombreCompleto;
     private List<String> apodos;
-    private Set<String> url_imagenes;
+    @JsonProperty("url_imagenes")
+    private Set<String> urlImagenes;
     private Set<ObraDePersonajeDto> obras;
-    private String especie; // Cambiar a String
+    private String especie;
 }

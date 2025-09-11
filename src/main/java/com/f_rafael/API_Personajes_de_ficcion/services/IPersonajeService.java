@@ -10,16 +10,16 @@ import java.util.Optional;
 public interface IPersonajeService {
     public Optional<Personaje> encontrarPorId(Long id);
     public List<Personaje> encontrarTodos();
-    public void borrarPorId(Long id);
-    public Personaje guardar(Personaje personaje);
-    public Personaje actualizar(Personaje personaje);
-    public List<Personaje> buscarPorNombreCompleto(String nombreCompleto);
-    public List<Personaje> buscarPorApodo(String apodo);
-    public List<Personaje> buscarPorTituloDeObra(String tituloObra);
-    public List<Personaje> buscarPorNombre(String nombre); // Borrar
-    public List<Personaje> buscarPorFragmentoNombre(String fragmentoNombre);
+    public PersonajeDto borrarPorId(Long id);
+    public PersonajeDto guardar(Personaje personaje);
+    public PersonajeDto actualizar(Personaje personaje);
+    public List<PersonajeDto> buscarPorNombreCompleto(String nombreCompleto);
+    public List<PersonajeDto> buscarPorApodo(String apodo);
+    public List<PersonajeDto> buscarPorTituloDeObra(String tituloObra);
+    public List<PersonajeDto> buscarPorNombre(String nombre); // Borrar
+    public List<PersonajeDto> buscarPorFragmentoNombre(String fragmentoNombre);
     public PersonajeConFotoDto devolverPersonajeConFotos(Long personajeId);
-    public List<Personaje> buscarPorFragmentoApodo(String fragmentoApodo);
+    public List<PersonajeDto> buscarPorFragmentoApodo(String fragmentoApodo);
     public PersonajeDto devolverUnoConSusObras(Long id);
     public List<PersonajeDto> devolverTodosConSusObras();
 }

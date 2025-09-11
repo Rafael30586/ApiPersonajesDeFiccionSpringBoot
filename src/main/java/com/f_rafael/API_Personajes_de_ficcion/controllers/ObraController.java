@@ -6,6 +6,7 @@ import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
 import com.f_rafael.API_Personajes_de_ficcion.services.ObraService;
 import com.f_rafael.API_Personajes_de_ficcion.services.PersonajeService;
+import com.f_rafael.API_Personajes_de_ficcion.utils.Transform;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,45 +44,45 @@ public class ObraController {
     }
 
     @PostMapping // Funciona
-    public ResponseEntity<Obra> save(@RequestBody Obra obra){
+    public ResponseEntity<ObraDto> save(@RequestBody Obra obra){
         return ResponseEntity.ok(service.guardar(obra));
     }
 
     @PutMapping // Funciona
-    public ResponseEntity<Obra> update(@RequestBody Obra obra){
+    public ResponseEntity<ObraDto> update(@RequestBody Obra obra){
         return ResponseEntity.ok(service.guardar(obra));
     }
 
     @GetMapping("/por-titulo/{titulo}") // Funciona
-    public ResponseEntity<List<Obra>> buscarPorTitulo(@PathVariable String titulo){
+    public ResponseEntity<List<ObraDto>> buscarPorTitulo(@PathVariable String titulo){
         String tituloSinGuiones = titulo.replace('-',' ');
         return ResponseEntity.ok(service.encontrarPotTitulo(tituloSinGuiones));
     }
 
     @GetMapping("/por-fragmento-titulo/{fragmento-titulo}") // Funciona
-    public ResponseEntity<List<Obra>> buscarPorFragmentoTitulo(@PathVariable("fragmento-titulo") String fragmentoTitulo){
+    public ResponseEntity<List<ObraDto>> buscarPorFragmentoTitulo(@PathVariable("fragmento-titulo") String fragmentoTitulo){
         return ResponseEntity.ok(service.encontrarPorFragmentoTitulo(fragmentoTitulo));
     }
 
     @PatchMapping("/editar-titulo/{obra-id}") // Funciona
-    public ResponseEntity<Obra> editarTitulo(@PathVariable("obra-id") Long obraId,
+    public ResponseEntity<ObraDto> editarTitulo(@PathVariable("obra-id") Long obraId,
                                              @RequestParam("nuevo-titulo") String nuevoTitulo){
         Obra obraAEditar;
-        String nuevoTituloSinGuiones = nuevoTitulo.replace('-',' ');
+        String nuevoTituloSinGuiones = Transform.quitarGuionesBajos(nuevoTitulo);
 
         if(service.encontrarPorId(obraId).isPresent()){
             obraAEditar = service.encontrarPorId(obraId).get();
             obraAEditar.setTitulo(nuevoTituloSinGuiones);
 
-            return ResponseEntity.ok(service.guardar(obraAEditar));
+            return ResponseEntity.ok(service.actualizar(obraAEditar));
         }else{
-            return ResponseEntity.ok(new Obra(-9999999L,null,null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Personaje no encontrado",null,null,null));
         }
 
     }
 
-    @PatchMapping("/editar-fecha/{obra-id}") // Funciona
-    public ResponseEntity<Obra> editarFecha(@PathVariable("obra-id") Long obraId,
+    @PatchMapping("/editar-fecha/{obra-id}")
+    public ResponseEntity<ObraDto> editarFecha(@PathVariable("obra-id") Long obraId,
                                             @RequestParam("fecha-lanzamiento") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fechaLanzamiento){
         Obra obraAEditar;
 
@@ -89,9 +90,9 @@ public class ObraController {
             obraAEditar = service.encontrarPorId(obraId).get();
             obraAEditar.setFechaLanzamiento(fechaLanzamiento);
 
-            return ResponseEntity.ok(service.guardar(obraAEditar));
+            return ResponseEntity.ok(service.actualizar(obraAEditar));
         }else{
-            return ResponseEntity.ok(new Obra(-9999999L,null,null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"PErsonaje no encontrado",null,null,null));
         }
 
     }
@@ -121,7 +122,7 @@ public class ObraController {
     }
 
     @PatchMapping("/agregar-personaje/{obra-id}/{personaje-id}")
-    public ResponseEntity<Obra> agregarPersonaje(@PathVariable("obra-id") Long obraId,
+    public ResponseEntity<ObraDto> agregarPersonaje(@PathVariable("obra-id") Long obraId,
                                                  @PathVariable("personaje-id") Long personajeId){
         Obra obraAEditar;
         Personaje personajeAAgregar;
@@ -131,27 +132,29 @@ public class ObraController {
             obraAEditar = service.encontrarPorId(obraId).get();
             setPersonajes = obraAEditar.getPersonajes();
         }else{
-            return ResponseEntity.ok(new Obra(-9999999L,"Obra no encontrada",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null));
         }
 
         if(personajeService.encontrarPorId(personajeId).isPresent()){
             personajeAAgregar = personajeService.encontrarPorId(personajeId).get();
         }else{
-            return ResponseEntity.ok(new Obra(-99999L,"Personaje no encontrado",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-99999L,"Personaje no encontrado",null,null,null));
         }
 
         setPersonajes.add(personajeAAgregar);
         obraAEditar.setPersonajes(setPersonajes);
 
-        return ResponseEntity.ok(obraAEditar);
+
+        return ResponseEntity.ok(service.actualizar(obraAEditar));
     }
 
     @PatchMapping("/remover-personaje/{obra-id}/{personaje-id}")
-    public ResponseEntity<Obra> removerPersonaje(@PathVariable("obra-id") Long obraId,
+    public ResponseEntity<ObraDto> removerPersonaje(@PathVariable("obra-id") Long obraId,
                                                  @PathVariable("personaje-id") Long personajeId){
         Obra obraAEditar;
         Set<Personaje> setPersonajes;
         Personaje personajeARemover = new Personaje();
+        boolean personajePresente = false;
 
         if(service.encontrarPorId(obraId).isPresent()){
             obraAEditar = service.encontrarPorId(obraId).get();
@@ -159,16 +162,19 @@ public class ObraController {
 
             for(Personaje p : setPersonajes){
                 if(p.getId().equals(personajeId)){
+                    personajePresente = true;
                     personajeARemover = p;
                 }
             }
 
+            if(!personajePresente) return ResponseEntity.ok(new ObraDto(-9999L,"Personaje no encontrado",null,null,null));
+
             setPersonajes.remove(personajeARemover);
             obraAEditar.setPersonajes(setPersonajes);
 
-            return ResponseEntity.ok(obraAEditar);
+            return ResponseEntity.ok(service.actualizar(obraAEditar));
         }else{
-            return ResponseEntity.ok(new Obra(-9999999L,"Obra no encontrada",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null));
         }
 
 

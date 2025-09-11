@@ -22,10 +22,10 @@ public interface PersonajeRepository extends JpaRepository<Personaje, Long> {
 
     List<Personaje> findByNombreCompleto(String nombreCompleto);
 
-    @Query("SELECT p FROM Personaje p WHERE p.nombreCompleto LIKE :fragmentoNombre")
+    @Query("SELECT p FROM Personaje p WHERE p.nombreCompleto LIKE %:fragmentoNombre%")
     List<Personaje> buscarPersonajesPorFragmentoNombre(@Param("fragmentoNombre") String fragmentoNombre);
 
-    @Query("SELECT p FROM Personaje p WHERE p.apodo LIKE :fragmentoApodo")
+    @Query("SELECT p FROM Personaje p WHERE p.apodo LIKE %:fragmentoApodo%")
     List<Personaje> buscarPersonajesPorFragmentoApodo(@Param("fragmentoApodo") String fragmentoApodo);
 
     @Query("SELECT p FROM Personaje p LEFT JOIN FETCH p.obras WHERE p.id = :id")

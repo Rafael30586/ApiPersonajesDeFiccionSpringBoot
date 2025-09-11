@@ -15,11 +15,15 @@ import java.util.Set;
 public class Transform {
     public static PersonajeDto transformarEnPersonajeDto(Personaje informacionPersonaje){
         PersonajeDto personajeARetornar;
-        Set<Obra> informacionObras = informacionPersonaje.getObras();
+        Set<Obra> informacionObras;
         Set<ObraDePersonajeDto> obrasAAsignar = new HashSet<>();
 
-        for(Obra io : informacionObras){
-            obrasAAsignar.add(new ObraDePersonajeDto(io.getTitulo(), io.getFechaLanzamiento(), io.getClasificacion()));
+        if(informacionPersonaje.getObras() != null){
+            informacionObras = informacionPersonaje.getObras();
+
+            for(Obra io : informacionObras){
+                obrasAAsignar.add(new ObraDePersonajeDto(io.getTitulo(), io.getFechaLanzamiento(), io.getClasificacion()));
+            }
         }
 
         personajeARetornar = new PersonajeDto(informacionPersonaje.getId(),
@@ -35,12 +39,16 @@ public class Transform {
     public static ObraDto tranformarEnObraDto(Obra informacionObra){
         ObraDto obraARetornar;
         Set<PersonajeEnObraDto> personajesAAsignar = new HashSet<>();
-        Set<Personaje> informacionPersonajes = informacionObra.getPersonajes();
+        Set<Personaje> informacionPersonajes = null;
 
-        for(Personaje ip : informacionPersonajes){
-            personajesAAsignar.add(new PersonajeEnObraDto(ip.getNombreCompleto(),
-                    ip.getApodo(),
-                    ip.getEspecie().getNombre()));
+        if(informacionObra.getPersonajes() != null){
+            informacionPersonajes = informacionObra.getPersonajes();
+
+            for(Personaje ip : informacionPersonajes){
+                personajesAAsignar.add(new PersonajeEnObraDto(ip.getNombreCompleto(),
+                        ip.getApodo(),
+                        ip.getEspecie().getNombre()));
+            }
         }
 
         obraARetornar = new ObraDto(informacionObra.getId(),
@@ -70,5 +78,10 @@ public class Transform {
         }
 
         return obrasARetornar;
+    }
+
+    public static String quitarGuionesBajos(String cadena){
+        String cadenaSinGuiones = cadena.replace('_',' ');
+        return cadenaSinGuiones;
     }
 }

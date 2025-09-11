@@ -1,6 +1,7 @@
 package com.f_rafael.API_Personajes_de_ficcion.dtos;
 
 import com.f_rafael.API_Personajes_de_ficcion.models.ClasificacionObra;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ObraDePersonajeDto {
     private String titulo;
-    private LocalDate fecha_lanzamiento;
+    @JsonProperty("fecha_lanzamiento")
+    private LocalDate fechaLanzamiento;
     private ClasificacionObra clasificacion;
 }

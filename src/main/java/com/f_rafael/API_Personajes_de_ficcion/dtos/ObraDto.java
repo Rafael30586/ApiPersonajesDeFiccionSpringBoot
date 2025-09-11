@@ -1,6 +1,8 @@
 package com.f_rafael.API_Personajes_de_ficcion.dtos;
 
 import com.f_rafael.API_Personajes_de_ficcion.models.ClasificacionObra;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,9 @@ import java.util.Set;
 public class ObraDto {
     private Long id;
     private String titulo;
-    private LocalDate fecha_lanzamiento;
+    @JsonProperty("fecha_lanzamiento")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate fechaLanzamiento;
     private ClasificacionObra clasificacionObra;
     private Set<PersonajeEnObraDto> personajes;
 }

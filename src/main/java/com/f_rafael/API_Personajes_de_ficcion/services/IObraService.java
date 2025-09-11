@@ -10,10 +10,10 @@ public interface IObraService {
     public Optional<Obra> encontrarPorId(Long id);
     public List<Obra> encontrarTodos();
     public List<ObraDto> devolverObrasConPersonajes();
-    public void borrarPorId(Long id);
-    public Obra guardar(Obra obra);
-    public Obra actualizar(Obra obra);
-    public List<Obra> encontrarPotTitulo(String titulo);
-    public List<Obra> encontrarPorFragmentoTitulo(String fragmentoTitulo);
+    public ObraDto borrarPorId(Long id);
+    public ObraDto guardar(Obra obra);
+    public ObraDto actualizar(Obra obra);
+    public List<ObraDto> encontrarPotTitulo(String titulo);
+    public List<ObraDto> encontrarPorFragmentoTitulo(String fragmentoTitulo);
     public ObraDto devolverUnaConSusPersonajes(Long id);
 }

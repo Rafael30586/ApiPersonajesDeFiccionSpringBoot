@@ -51,28 +51,35 @@ public class ObraService implements IObraService{
     }
 
     @Override
-    public void borrarPorId(Long id) {
-        repository.deleteById(id);
+    public ObraDto borrarPorId(Long id) {
+        ObraDto obraARetornar;
+        if(this.encontrarPorId(id).isPresent()){
+            obraARetornar = Transform.tranformarEnObraDto(this.encontrarPorId(id).get());
+            repository.deleteById(id);
+        }else{
+            obraARetornar = new ObraDto(-999999L,"Obra no encontrada",null,null,null);
+        }
+        return obraARetornar;
     }
 
     @Override
-    public Obra guardar(Obra obra) {
-        return repository.save(obra);
+    public ObraDto guardar(Obra obra) {
+        return Transform.tranformarEnObraDto(repository.save(obra));
     }
 
     @Override
-    public Obra actualizar(Obra obra) {
+    public ObraDto actualizar(Obra obra) {
         return this.guardar(obra);
     }
 
     @Override
-    public List<Obra> encontrarPotTitulo(String titulo) {
-        return repository.encontrarPorTitulo(titulo);
+    public List<ObraDto> encontrarPotTitulo(String titulo) {
+        return Transform.transformarEnObraDtos(repository.encontrarPorTitulo(titulo));
     }
 
     @Override
-    public List<Obra> encontrarPorFragmentoTitulo(String fragmentoTitulo) {
-        return repository.encontrarPorFragmentoTitulo(fragmentoTitulo);
+    public List<ObraDto> encontrarPorFragmentoTitulo(String fragmentoTitulo) {
+        return Transform.transformarEnObraDtos(repository.encontrarPorFragmentoTitulo(fragmentoTitulo));
     }
 
     @Override
