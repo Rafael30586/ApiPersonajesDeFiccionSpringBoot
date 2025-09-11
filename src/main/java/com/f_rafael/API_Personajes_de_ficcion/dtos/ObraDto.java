@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
+
 import java.util.Set;
 
 @Getter @Setter
@@ -18,6 +18,8 @@ import java.util.Set;
 public class ObraDto {
     private Long id;
     private String titulo;
+    @JsonProperty("url_imagenes")
+    private Set<String> urlImagenes;
     @JsonProperty("fecha_lanzamiento")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaLanzamiento;

@@ -1,7 +1,8 @@
 package com.f_rafael.API_Personajes_de_ficcion.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,10 @@ public class Obra {
     private Long id;
     @Column(nullable = false)
     private String titulo;
+    @ElementCollection
+    @CollectionTable(name = "obra_url_imagenes")
+    @JsonProperty("url_imagenes")
+    private Set<String> urlImagenes;
     @Column(name = "fecha_lanzamiento")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaLanzamiento;

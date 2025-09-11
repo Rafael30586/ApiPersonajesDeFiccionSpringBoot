@@ -1,6 +1,6 @@
 package com.f_rafael.API_Personajes_de_ficcion.dtos;
 
-import com.f_rafael.API_Personajes_de_ficcion.models.Especie;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

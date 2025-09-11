@@ -17,6 +17,11 @@ public class Transform {
         PersonajeDto personajeARetornar;
         Set<Obra> informacionObras;
         Set<ObraDePersonajeDto> obrasAAsignar = new HashSet<>();
+        String especie = null;
+
+        if(informacionPersonaje.getEspecie() != null){
+            especie = informacionPersonaje.getEspecie().getNombre();
+        }
 
         if(informacionPersonaje.getObras() != null){
             informacionObras = informacionPersonaje.getObras();
@@ -31,7 +36,7 @@ public class Transform {
                 informacionPersonaje.getApodo(),
                 informacionPersonaje.getUrlImagenes(),
                 obrasAAsignar,
-                informacionPersonaje.getEspecie().getNombre());
+                especie);
 
         return personajeARetornar;
     }
@@ -53,6 +58,7 @@ public class Transform {
 
         obraARetornar = new ObraDto(informacionObra.getId(),
                 informacionObra.getTitulo(),
+                informacionObra.getUrlImagenes(),
                 informacionObra.getFechaLanzamiento(),
                 informacionObra.getClasificacion(),
                 personajesAAsignar);

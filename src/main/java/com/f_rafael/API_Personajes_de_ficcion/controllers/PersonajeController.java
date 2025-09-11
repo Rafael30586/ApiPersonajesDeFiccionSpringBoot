@@ -42,9 +42,10 @@ public class PersonajeController {
         return ResponseEntity.ok(service.devolverTodosConSusObras());
     }
 
-    @DeleteMapping("/{id}")
-    public void borrarPorId(@PathVariable Long id){
+    @DeleteMapping("/{id}") // Borra al personaje pero da un error en el servidor
+    public ResponseEntity<String> borrarPorId(@PathVariable Long id){
         service.borrarPorId(id);
+        return ResponseEntity.ok("Personaje borrado");
     }
 
     @PostMapping // Guarda el personaje pero retorna un json con valores null que no deberían estar ahí
@@ -215,9 +216,13 @@ public class PersonajeController {
         }
 
         personajeAEditar.setEspecie(especideAAgregar);
-        //service.guardar(personajeAEditar);
 
         return ResponseEntity.ok(service.guardar(personajeAEditar));
+    }
+
+    @GetMapping("/por-especie/{especie}")
+    public ResponseEntity<List<PersonajeDto>> mostrarPorEspecie(@PathVariable("especie") String especie){
+        return ResponseEntity.ok(service.devolverPorEspecie(especie));
     }
 
 

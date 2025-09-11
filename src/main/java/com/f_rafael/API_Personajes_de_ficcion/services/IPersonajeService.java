@@ -22,4 +22,5 @@ public interface IPersonajeService {
     public List<PersonajeDto> buscarPorFragmentoApodo(String fragmentoApodo);
     public PersonajeDto devolverUnoConSusObras(Long id);
     public List<PersonajeDto> devolverTodosConSusObras();
+    public List<PersonajeDto> devolverPorEspecie(String especie);
 }

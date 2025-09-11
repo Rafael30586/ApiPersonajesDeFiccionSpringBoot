@@ -38,9 +38,9 @@ public class ObraController {
         return ResponseEntity.ok(service.devolverObrasConPersonajes());
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id){
-        service.borrarPorId(id);
+    @DeleteMapping("/{id}") // Funciona
+    public ObraDto deleteById(@PathVariable Long id){
+        return service.borrarPorId(id);
     }
 
     @PostMapping // Funciona
@@ -76,7 +76,7 @@ public class ObraController {
 
             return ResponseEntity.ok(service.actualizar(obraAEditar));
         }else{
-            return ResponseEntity.ok(new ObraDto(-9999999L,"Personaje no encontrado",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Personaje no encontrado",null,null,null,null));
         }
 
     }
@@ -92,7 +92,7 @@ public class ObraController {
 
             return ResponseEntity.ok(service.actualizar(obraAEditar));
         }else{
-            return ResponseEntity.ok(new ObraDto(-9999999L,"PErsonaje no encontrado",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"PErsonaje no encontrado",null,null,null,null));
         }
 
     }
@@ -107,7 +107,7 @@ public class ObraController {
         if(numeroClasificacion < clasicaciones.length){
             clasificacionAEditar = clasicaciones[numeroClasificacion];
         }else{
-            return ResponseEntity.ok(new Obra(-99999L,"Clasificacion no encontrada",null,null,null));
+            return ResponseEntity.ok(new Obra(-99999L,"Clasificacion no encontrada",null,null,null,null));
         }
 
         if(service.encontrarPorId(obraId).isPresent()){
@@ -116,7 +116,7 @@ public class ObraController {
 
             return ResponseEntity.ok(obraAEditar);
         }else{
-            return ResponseEntity.ok(new Obra(-999999L,"Obra no encontrada",null,null,null));
+            return ResponseEntity.ok(new Obra(-999999L,"Obra no encontrada",null,null,null,null));
         }
 
     }
@@ -132,13 +132,13 @@ public class ObraController {
             obraAEditar = service.encontrarPorId(obraId).get();
             setPersonajes = obraAEditar.getPersonajes();
         }else{
-            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null,null));
         }
 
         if(personajeService.encontrarPorId(personajeId).isPresent()){
             personajeAAgregar = personajeService.encontrarPorId(personajeId).get();
         }else{
-            return ResponseEntity.ok(new ObraDto(-99999L,"Personaje no encontrado",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-99999L,"Personaje no encontrado",null,null,null,null));
         }
 
         setPersonajes.add(personajeAAgregar);
@@ -167,14 +167,14 @@ public class ObraController {
                 }
             }
 
-            if(!personajePresente) return ResponseEntity.ok(new ObraDto(-9999L,"Personaje no encontrado",null,null,null));
+            if(!personajePresente) return ResponseEntity.ok(new ObraDto(-9999L,"Personaje no encontrado",null,null,null,null));
 
             setPersonajes.remove(personajeARemover);
             obraAEditar.setPersonajes(setPersonajes);
 
             return ResponseEntity.ok(service.actualizar(obraAEditar));
         }else{
-            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null));
+            return ResponseEntity.ok(new ObraDto(-9999999L,"Obra no encontrada",null,null,null,null));
         }
 
 

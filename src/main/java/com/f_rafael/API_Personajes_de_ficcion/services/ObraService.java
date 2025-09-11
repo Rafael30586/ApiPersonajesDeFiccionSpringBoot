@@ -31,20 +31,6 @@ public class ObraService implements IObraService{
     @Override
     public List<ObraDto> devolverObrasConPersonajes() {
         List<ObraDto> obrasARetornar;
-        //List<Obra> informacionObras = repository.buscarTodasConSusPersonajes();
-       // Set<Personaje> informacionPersonajes;
-        //Set<PersonajeEnObraDto> personajesParaAsignar = new HashSet<>();
-/*
-        for(Obra o : informacionObras){
-            informacionPersonajes = o.getPersonajes();
-
-            for(Personaje p : informacionPersonajes){
-                personajesParaAsignar.add(new PersonajeEnObraDto(p.getNombreCompleto(),p.getApodo(),p.getEspecie().getNombre()));
-            }
-
-            obrasARetornar.add(new ObraDto(o.getId(),o.getTitulo(),o.getFechaLanzamiento(),o.getClasificacion(), personajesParaAsignar));
-
-        }*/
         obrasARetornar = Transform.transformarEnObraDtos(repository.buscarTodasConSusPersonajes());
 
         return obrasARetornar;
@@ -57,7 +43,7 @@ public class ObraService implements IObraService{
             obraARetornar = Transform.tranformarEnObraDto(this.encontrarPorId(id).get());
             repository.deleteById(id);
         }else{
-            obraARetornar = new ObraDto(-999999L,"Obra no encontrada",null,null,null);
+            obraARetornar = new ObraDto(-999999L,"Obra no encontrada",null,null,null,null);
         }
         return obraARetornar;
     }
@@ -85,27 +71,11 @@ public class ObraService implements IObraService{
     @Override
     public ObraDto devolverUnaConSusPersonajes(Long id) {
         ObraDto obraARetornar;
-        /*Set<Personaje> informacionPersonajes;
-        Obra informacionObra;
-        Set<PersonajeEnObraDto> personajesParaAsignar = new HashSet<>();*/
 
         if(repository.findById(id).isPresent()){
             obraARetornar = Transform.tranformarEnObraDto(repository.encontrarUnaYSusPersonajes(id).get());
-            /*
-            informacionObra = repository.encontrarUnaYSusPersonajes(id).get();
-            informacionPersonajes = informacionObra.getPersonajes();
-
-            for(Personaje p : informacionPersonajes){
-                personajesParaAsignar.add(new PersonajeEnObraDto(p.getNombreCompleto(),p.getApodo(),p.getEspecie().getNombre()));
-            }
-
-            obraARetornar = new ObraDto(informacionObra.getId(),
-                    informacionObra.getTitulo(),
-                    informacionObra.getFechaLanzamiento(),
-                    informacionObra.getClasificacion(),
-                    personajesParaAsignar);*/
         }else{
-            obraARetornar = new ObraDto(-999999L,"Obra no encontrada",null,null,null);
+            obraARetornar = new ObraDto(-999999L,"Obra no encontrada",null,null,null,null);
         }
 
         return obraARetornar;
