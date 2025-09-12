@@ -2,6 +2,7 @@ package com.f_rafael.API_Personajes_de_ficcion.controllers;
 
 import com.f_rafael.API_Personajes_de_ficcion.models.Especie;
 import com.f_rafael.API_Personajes_de_ficcion.services.EspecieService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -36,7 +37,7 @@ public class EspecieController {
 
     @PostMapping // Funciona
     public ResponseEntity<Especie> guardar(@RequestBody Especie especie){
-        return ResponseEntity.ok(service.guardar(especie));
+        return new ResponseEntity<Especie>(service.guardar(especie), HttpStatus.CREATED);
     }
 
     @PutMapping // Funciona

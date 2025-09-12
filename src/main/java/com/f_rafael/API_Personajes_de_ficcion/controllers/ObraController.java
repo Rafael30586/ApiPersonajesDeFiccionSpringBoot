@@ -8,6 +8,7 @@ import com.f_rafael.API_Personajes_de_ficcion.services.ObraService;
 import com.f_rafael.API_Personajes_de_ficcion.services.PersonajeService;
 import com.f_rafael.API_Personajes_de_ficcion.utils.Transform;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class ObraController {
 
     @PostMapping // Funciona
     public ResponseEntity<ObraDto> save(@RequestBody Obra obra){
-        return ResponseEntity.ok(service.guardar(obra));
+        return new ResponseEntity<ObraDto>(service.guardar(obra), HttpStatus.CREATED);
     }
 
     @PutMapping // Funciona

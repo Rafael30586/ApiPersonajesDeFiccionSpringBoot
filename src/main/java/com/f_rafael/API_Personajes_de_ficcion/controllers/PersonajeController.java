@@ -10,6 +10,7 @@ import com.f_rafael.API_Personajes_de_ficcion.services.EspecieService;
 import com.f_rafael.API_Personajes_de_ficcion.services.ObraService;
 import com.f_rafael.API_Personajes_de_ficcion.services.PersonajeService;
 import com.f_rafael.API_Personajes_de_ficcion.utils.Transform;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class PersonajeController {
 
     @PostMapping // Guarda el personaje pero retorna un json con valores null que no deberían estar ahí
     public ResponseEntity<PersonajeDto> guardar(@RequestBody Personaje personaje){
-        return ResponseEntity.ok(service.guardar(personaje));
+        return new ResponseEntity<PersonajeDto>(service.guardar(personaje), HttpStatus.CREATED);
     }
     @PutMapping // Igual al postmapping
     public ResponseEntity<PersonajeDto> actualizar(@RequestBody Personaje personaje){
