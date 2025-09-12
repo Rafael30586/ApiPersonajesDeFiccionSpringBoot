@@ -1,4 +1,4 @@
-# API REST sobre personajes de ficción
+<h1 style="color:rgb(187,39,245)">API sobre personajes de ficción</h1>
 
 ## Esta API fué desarrollada en java utilizando spring boot y el IDE IntelliJIDEA. Contiene tres entidades principales: Personaje, Especie y Obra. Un personaje es aquel que ha aparecido en obras de ficción (películas, series de televisión, video juegos, etc) como podrían ser Neo de la película Matrix, Sonic de los video juegos de Sega, Bart Simpson de la serie de televisión, etc. La entidad obra hace referencia a comics, novelas, películas, video juegos y otros productos en los cuales hayan aparecido los personajes. Especie es el como clasificaríamos a un personaje como ser vivo ,por ejemplo, un personaje de ficción puede ser un humano, un elfo, un perro o un marciano, por nombrar solo algunos
 
@@ -8,7 +8,7 @@
 
 ---
 
-### Solicitud POST (Personajes)
+<h3 style="color:rgb(93, 125, 212)">Solicitud POST (Personajes)</h3>
 
 - **Endpoint:** /api/personajes  
 - **Body:**
@@ -48,7 +48,7 @@
 
 ---
 
-### Solicitudes GET (Personajes)
+<h3 style="color:rgb(89, 194, 97)">Solicitudes GET (Personajes)</h3>
 
 1. #### Mostrar todos los personajes
 
@@ -91,7 +91,7 @@
 
 ---
 
-### Solicitud PUT (Personajes)
+<h3 style="color:rgb(93, 212, 206)">Solicitud PUT (Personajes)</h3>
 
 - **Endpoint:** /api/personajes
 - **Eody:**
@@ -109,14 +109,14 @@
 
 ---
 
-### Solicitud DELETE (Personajes)
+<h3 style="color:rgb(217, 39, 55)">Solicitud DELETE (Personajes)</h3>
 
 - **Endpoint:** /api/personajes/**{id}**
   - **"id"** es un número entero
 
 ---
 
-### Solicitudes PATCH (Personajes)
+<h3 style="color:rgb(212, 242, 85)">Solicitudes PATCH (Personajes)</h3>
 
 1. #### Editar el nombre completo del personaje
 
@@ -186,7 +186,7 @@
 
 ---
 
-### Solicitud POST (Especies)
+<h3 style="color:rgb(93, 125, 212)">Solicitud POST (Especies)</h3>
 
 - **Endpoint:** /api/especies
 - **Body:**
@@ -207,7 +207,7 @@
 
 ---
 
-### Solicitudes GET (Especies)
+<h3 style="color:rgb(89, 194, 97)">Solicitudes GET (Especies)</h3>
 
 1. #### Mostrar todas las especies
 
@@ -230,7 +230,7 @@
 
 ---
 
-### Solicitud PUT (Especies)
+<h3 style="color:rgb(93, 212, 206)">Solicitud PUT (Especies)</h3>
 
 - **Endpoint:** /api/especies
 - **Body:**
@@ -245,7 +245,7 @@
 
 ---
 
-### Solicitud DELETE (Especies)
+<h3 style="color:rgb(217, 39, 55)">Solicitud DELETE (Especies)</h3>
 
 - **Endpoint:** /api/personajes/**{id}**
   - **"id"** es un número entero
@@ -256,7 +256,7 @@
 
 ---
 
-### Solicitud POST (Obras)
+<h3 style="color:rgb(93, 125, 212)">Solicitud POST (Obras)</h3>
 
 - **Endpoint:** /api/obras
 - **Body:**
@@ -289,7 +289,7 @@
 
 ---
 
-### Solicitudes GET (Obras)
+<h3 style="color:rgb(89, 194, 97)">Solicitudes GET (Obras)</h3>
 
 1. #### Mostrar todas las obras guardadas hasta el momento
 
@@ -312,7 +312,7 @@
 
 ---
 
-### Solicitud PUT (Obras)
+<h3 style="color:rgb(93, 212, 206)">Solicitud PUT (Obras)</h3>
 
 - **Endpoint:** /api/obras
 - **Body:**
@@ -331,14 +331,14 @@
 
 ---
 
-### Solicitud DELETE (Obras)
+<h3 style="color:rgb(217, 39, 55)">Solicitud DELETE (Obras)</h3>
 
 - **Endpoint:** /api/obras/**{id}**
   - **"id"** es un número entero
 
 ---
 
-### Solicitudes PATCH (Obras)
+<h3 style="color:rgb(212, 242, 85)">Solicitudes PATCH (Obras)</h3>
 
 1. #### Cambiar el título de una obra
 
@@ -377,7 +377,7 @@
 
 ---
 
-Notas importantes:
+<span style="color:orange">Notas importantes</span>
 
 - A excepción del tipo enumarado ClasificacionObra y de los números romanos, se recomienda utilizar letras minúsculas para las cadenas de texto, tales como títulos, nombres, etc;
 - Se recomienda usar mayúsculas para números romanos, ejemplo: final fantasy XII (final fantasy 12).
