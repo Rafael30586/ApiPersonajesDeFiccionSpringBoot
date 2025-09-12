@@ -29,6 +29,7 @@ public class Obra {
     private Set<String> urlImagenes;
     @Column(name = "fecha_lanzamiento")
     @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonProperty("fecha_lanzamiento")
     private LocalDate fechaLanzamiento;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

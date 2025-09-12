@@ -45,14 +45,18 @@ public class Transform {
         ObraDto obraARetornar;
         Set<PersonajeEnObraDto> personajesAAsignar = new HashSet<>();
         Set<Personaje> informacionPersonajes = null;
+        String especie;
 
         if(informacionObra.getPersonajes() != null){
             informacionPersonajes = informacionObra.getPersonajes();
 
             for(Personaje ip : informacionPersonajes){
+                if(ip.getEspecie() != null) especie = ip.getEspecie().getNombre();
+                else especie = null;
+
                 personajesAAsignar.add(new PersonajeEnObraDto(ip.getNombreCompleto(),
                         ip.getApodo(),
-                        ip.getEspecie().getNombre()));
+                        especie));
             }
         }
 

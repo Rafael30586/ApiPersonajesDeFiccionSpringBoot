@@ -156,9 +156,31 @@ public class PersonajeService implements IPersonajeService {
 
     }
 
-    @Override
+    @Override // Corregir este método
     public List<PersonajeDto> buscarPorFragmentoApodo(String fragmentoApodo) {
-        return Transform.transformarEnPersonajeDtos(repository.buscarPorFragmentoApodo(fragmentoApodo));
+        List<Personaje> todosLosPersonajes = repository.findAll();
+        List<Personaje> personajesARetornar = new ArrayList<>();
+        List<String> apodos;
+        boolean contieneFragmentoApodo;
+
+        for(Personaje p : todosLosPersonajes){
+
+            contieneFragmentoApodo = false;
+
+            if(p.getApodo() != null){
+                apodos = p.getApodo();
+
+                for(String a : apodos){
+                    if(a.contains(fragmentoApodo)) contieneFragmentoApodo = true;
+                }
+
+            }
+
+            if(contieneFragmentoApodo) personajesARetornar.add(p);
+
+        }
+
+        return Transform.transformarEnPersonajeDtos(personajesARetornar);
     }
 
     @Override

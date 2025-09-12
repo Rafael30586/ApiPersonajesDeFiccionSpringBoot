@@ -135,7 +135,7 @@ public class ObraController {
         }
 
     }
-
+/*
     @PatchMapping("/agregar-personaje/{obra-id}/{personaje-id}") // No funciona por ser una relación bidireccional y la otra entidad es la dueña
     public ResponseEntity<ObraDto> agregarPersonaje(@PathVariable("obra-id") Long obraId,
                                                  @PathVariable("personaje-id") Long personajeId){
@@ -221,6 +221,6 @@ public class ObraController {
         }
 
 
-    }
+    }*/
 
 }

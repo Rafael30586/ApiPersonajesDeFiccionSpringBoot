@@ -85,7 +85,7 @@ public class PersonajeController {
         return ResponseEntity.ok(service.buscarPorFragmentoNombre(fragmentoNombre));
     }
 
-    @GetMapping("/por-fragmento-apodo/{fragmento-apodo}") // No funciona
+    @GetMapping("/por-fragmento-apodo/{fragmento-apodo}") // Funciona
     public ResponseEntity<List<PersonajeDto>> buscarPorFragmentoApodo(@PathVariable("fragmento-apodo") String fragmentoApodo){
         return ResponseEntity.ok(service.buscarPorFragmentoApodo(fragmentoApodo));
     }
@@ -143,7 +143,7 @@ public class PersonajeController {
 
     }
 
-    @PatchMapping("/agregar-obra/{personaje-id}/{obra-id}") // Funciona
+    @PatchMapping("/agregar-obra/{personaje-id}/{obra-id}") // Funciona, pero probar si funciona con un personaje que no tenga obras, sospecho que puede dar un null pointer exception u otro error
     public ResponseEntity<PersonajeDto> agregarObra(@PathVariable("personaje-id") Long personajeId,
                                                  @PathVariable("obra-id") Long obraId){
         Obra obraAAgregar;
