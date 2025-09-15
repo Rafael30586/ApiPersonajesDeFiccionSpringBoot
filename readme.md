@@ -310,6 +310,16 @@
     - **Endpoint:** /api/obras/por-fragmento-titulo/**{fragmento-titulo}**
       - **"fragmento-titulo"** es una cadena de texto
 
+5. #### Buscar por periodo
+
+    -**Endpoint:** /api/obras/por-periodo?desde= &hasta=
+      -A los argumentos "desde" y "hasta" hay que asignarles los años que conforman el período de interés del lanzamiento de obras. Ejemplo de solicitud : /api/obras/por-periodo?desde=1980&hasta=2002.
+
+6. #### Buscar por clasificación
+
+    -**Endpoint:** /api/obras/por-clasificacion/**{clasificacion}**
+      - **"clasificacion"** es una cadena de caracteres que puede ser una de las siguientes: video_juego, pelicula, serie, comic, cuento o novela.
+
 ---
 
 <h3 style="color:rgb(93, 212, 206)">Solicitud PUT (Obras)</h3>
