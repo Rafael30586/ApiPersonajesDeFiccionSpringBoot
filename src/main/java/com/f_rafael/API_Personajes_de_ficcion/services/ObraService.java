@@ -1,9 +1,8 @@
 package com.f_rafael.API_Personajes_de_ficcion.services;
 
 import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDto;
-import com.f_rafael.API_Personajes_de_ficcion.dtos.PersonajeEnObraDto;
+import com.f_rafael.API_Personajes_de_ficcion.models.ClasificacionObra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
-import com.f_rafael.API_Personajes_de_ficcion.models.Personaje;
 import com.f_rafael.API_Personajes_de_ficcion.repositories.ObraRepository;
 import com.f_rafael.API_Personajes_de_ficcion.utils.Transform;
 import org.springframework.stereotype.Service;
@@ -79,5 +78,17 @@ public class ObraService implements IObraService{
         }
 
         return obraARetornar;
+    }
+
+    @Override
+    public List<ObraDto> buscarPorPeriodo(int desde, int hasta) {
+        List<ObraDto> obrasARetornar = Transform.transformarEnObraDtos(repository.buscarPorPeriodo(desde,hasta));
+        return obrasARetornar;
+    }
+
+    @Override
+    public List<ObraDto> buscarPorClasificacion(ClasificacionObra clasificacion) {
+        List<ObraDto> obrasARetornar = Transform.transformarEnObraDtos(repository.buscarPorClasificacion(clasificacion));
+        return obrasARetornar;
     }
 }

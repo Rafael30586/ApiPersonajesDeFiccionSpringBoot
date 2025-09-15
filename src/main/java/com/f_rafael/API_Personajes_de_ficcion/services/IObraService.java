@@ -1,6 +1,7 @@
 package com.f_rafael.API_Personajes_de_ficcion.services;
 
 import com.f_rafael.API_Personajes_de_ficcion.dtos.ObraDto;
+import com.f_rafael.API_Personajes_de_ficcion.models.ClasificacionObra;
 import com.f_rafael.API_Personajes_de_ficcion.models.Obra;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface IObraService {
     public List<ObraDto> encontrarPotTitulo(String titulo);
     public List<ObraDto> encontrarPorFragmentoTitulo(String fragmentoTitulo);
     public ObraDto devolverUnaConSusPersonajes(Long id);
+    public List<ObraDto> buscarPorPeriodo(int desde, int hasta);
+    public List<ObraDto> buscarPorClasificacion(ClasificacionObra clasificacion);
 }
