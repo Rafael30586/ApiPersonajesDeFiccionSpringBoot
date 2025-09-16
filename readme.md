@@ -393,3 +393,4 @@
 - Se recomienda usar mayúsculas para números romanos, ejemplo: final fantasy XII (final fantasy 12).
 - Cuando se habla de fragmentos se hace referencia a cadenas de texto que puedan estar contendias en un nombre, título o apodo, ejemplo, el fragmento "ald" está contenido en el nombre "donald", es decir, al buscar personajes por "fragmento-nombre" con el valor "ald", obtendríamos personajes que se llamen "donald" y "aldo" entre algunos de los resultados.
 - Al realizar solicitudes del tipo PUT, tener en cuenta que el id presente en el cuerpo o body de la solicitud debe corresponder a la entidad que queramos editar, aunque para modificar entidades es mejor usar las solicitudes del tipo PATCH, ya que permiten cambiar atributos de manera aislada sin la necesidad de abarcar la entidad entera.
+- Después de crear las imágenes y contenedores con el dockerfile y el docker-compose.yml, se recomienda ejecutar el contenedor mysql antes que el de openjdk.
