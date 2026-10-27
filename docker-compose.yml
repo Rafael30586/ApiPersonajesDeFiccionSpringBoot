@@ -1,5 +1,6 @@
 services: 
   api_personajes_de_ficcion:  # Este es el nombre que aparece en el application properties (application name)
+    container_name: personajes_ficcion_api
     env_file:
       - ".env"
     build: . # Esto hace referencia al directorio raíz que es donde está el docekrfile
@@ -17,6 +18,7 @@ services:
     image: mysql:9.4.0
     ports:
       - "3307:3306"
+    container_name: personajes_ficcion_db  
     environment:
       MYSQL_DATABASE: personajes
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
